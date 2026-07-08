@@ -156,7 +156,7 @@ function ProgressSkeleton() {
 }
 
 /* --- Main component --- */
-function WorkspaceDashboardComp(): JSX.Element {
+function WorkspaceDashboardComp(): React.JSX.Element {
   const workspaceId = useWorkspaceId()
   const { user } = useKindeBrowserClient()
 
