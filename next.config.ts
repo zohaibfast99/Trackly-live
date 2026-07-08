@@ -20,6 +20,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Hide the Next.js dev indicator (bottom-corner badge) in development.
+  devIndicators: false,
   images:{
     remotePatterns:[{protocol: "https", hostname: "utfs.io"}],
   },
