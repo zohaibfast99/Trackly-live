@@ -5,8 +5,11 @@ export const getUserWorkspaces = async () => {
     try{
         const { user } = await userRequired();
 
-        // Check if user exists in database, if not create them
-        let dbUser = await db.user.findUnique({
+        // Look up the user with their workspace memberships.
+        // Brand-new users won't have a DB row yet — it is created during
+        // onboarding (see createUser). Returning null here lets the layout
+        // redirect them to /onboarding.
+        const dbUser = await db.user.findUnique({
             where: {id: user.id},
             include: {
                 workspaces: {
@@ -21,34 +24,6 @@ export const getUserWorkspaces = async () => {
                 },
             },
         });
-
-        // If user doesn't exist in database, create them
-        if (!dbUser) {
-            console.log("User not found in DB, creating new user:", user.id);
-            dbUser = await db.user.create({
-                data: {
-                    id: user.id,
-                    name: user.given_name && user.family_name 
-                        ? `${user.given_name} ${user.family_name}` 
-                        : user.given_name || user.family_name || 'Unknown User',
-                    email: user.email || '',
-                    image: user.picture || null,
-                    onboardingCompleted: false,
-                },
-                include: {
-                    workspaces: {
-                        select: {
-                            id: true,
-                            userId: true,
-                            workspaceId: true,
-                            accessLevel: true,
-                            createdAt: true,
-                            workspace: {select: {name: true}},
-                        },
-                    },
-                },
-            });
-        }
 
         return {data: dbUser}
     }catch (error) {

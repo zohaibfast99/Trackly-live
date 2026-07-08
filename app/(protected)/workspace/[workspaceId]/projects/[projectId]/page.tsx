@@ -35,7 +35,7 @@ const ProjectPage =async (props:ProjectPageProps) =>{
                 <TabsContent value="dashboard"><ProjectDashboard 
              project={project as unknown as ProjectProps}
              tasks={tasks as any }
-             activities={activities!}
+             activities={activities as any}
              totalWorkspaceMembers={totalWorkspaceMembers!}
              comments={comments as any[]}
              />
@@ -45,7 +45,7 @@ const ProjectPage =async (props:ProjectPageProps) =>{
                  <ProjectTableContainer  projectId={projectId}/>
                 </TabsContent>
             <TabsContent value="kanban">
-                <ProjectKanban initialTasks={tasks?.items || []}/>
+                <ProjectKanban initialTasks={(tasks?.items || []) as any}/>
             </TabsContent>
         </Tabs>
     </div>
